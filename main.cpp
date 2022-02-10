@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <time.h>
 
 void wordListAppender(std::vector<std::string> &list) {
 	std::ifstream inFile;
@@ -31,9 +32,8 @@ bool validityCheck(std::string guess) {
 }
 
 int randomNumber() {
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> dist6(1, 12972);
+	srand (time(NULL));
+    int rng=rand() %12972 + 1;
     
     return rng;
 }
