@@ -45,7 +45,8 @@ int main() {
 	int wins = 0;
 	int bestWinStreak = 0;
 	int gamesPlayed = 0;
-	
+	std::string guesslist[6];
+
 	std::cout << "WORDLE: The Game" << "\n\n";
 	
 	while (running) {
@@ -54,7 +55,7 @@ int main() {
 		bool currentGameRunning = true;
 		bool wordGuessed = false;
 		char playAgain;
-		std::vector<char>[6] guesslist; 
+		 
 		//int randomIndex = std::experimental::randint(100, 999);
 		//std::string randomWord = wordList[randomIndex];
 		int num = randomNumber();
@@ -104,6 +105,7 @@ int main() {
 				
 				if (playAgain == 'y') {
 					currentGameRunning = false;
+					for(int i=0; i<)
 				} else {
 					running = false;
 					currentGameRunning = false;
