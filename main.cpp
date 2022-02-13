@@ -6,23 +6,20 @@
 #include <random>
 #include <time.h>
 
-void wordListAppender(std::vector<std::string> &list) {
-	std::ifstream inFile;
-	inFile.open("wordleWordList.txt");
-	inFile.close();
-}
-
-void lenCheck(std::string &guess) {
-	while (guess.size() != 5) {
-		std::cout << "Please enter a 5 letter word." << "\n";
-		std::cin >> guess;
+bool charCheck(std::string guess) {
+	int count = 0;
+	std::string chars = "abcdefghijklmnopqrstuvwxyz";
+	for (char &c : guess) {
+		for (char &d : chars) { 
+			if (c == d) {
+				count += 1;
+			}
+		}
 	}
-}
-
-void lowerCase(std::string &userInput) {
-    std::for_each(userInput.begin(), userInput.end(), [](char & c) {
-        c = ::tolower(c);
-    });
+	if (count >= 5) {
+		return true;
+	}
+	return false;
 }
 
 bool validityCheck(std::string guess) {
@@ -31,9 +28,39 @@ bool validityCheck(std::string guess) {
 	return false;
 }
 
+
+void wordListAppender(std::vector<std::string> &list) {
+	std::ifstream inFile;
+	inFile.open("wordleWordList.txt");
+	inFile.close();
+}
+
+void lowerCase(std::string &userInput) {
+    std::for_each(userInput.begin(), userInput.end(), [](char & c) {
+        c = ::tolower(c);
+    });
+}
+
+void charCheckPrompt(std::string &guess) {
+	while (!charCheck(guess)) {
+		std::cout << "Please enter valid characters." << "\n";
+		std::cin >> guess;
+		lowerCase(guess);
+	}
+}
+
+void lenCheck(std::string &guess) {
+	while (guess.size() != 5) {
+		std::cout << "Please enter a 5 letter word." << "\n";
+		std::cin >> guess;
+		lowerCase(guess);
+		charCheckPrompt(guess);
+	}
+}
+
 int randomNumber() {
 	srand (time(NULL));
-    int rng=rand() %12972 + 1;
+    int rng = rand() % 12972 + 1;
     
     return rng;
 }
@@ -51,13 +78,10 @@ int main() {
 	while (running) {
 		std::vector<char> guesses;
 		int guessCount = 0;
+		int num = randomNumber();
 		bool currentGameRunning = true;
 		bool wordGuessed = false;
 		char playAgain;
-		//int randomIndex = std::experimental::randint(100, 999);
-		//std::string randomWord = wordList[randomIndex];
-		int num = randomNumber();
-		std::cout << num << "\n";
 		gamesPlayed += 1;
 		
 		while (currentGameRunning) {
@@ -67,6 +91,7 @@ int main() {
 			std::cin >> guess;
 			
 			lowerCase(guess);
+			charCheckPrompt(guess);
 			lenCheck(guess);
 			
 			/*
@@ -94,6 +119,7 @@ int main() {
 			
 			for (int i = 0; i < guess.size(); i++) {
 				std::cout << guess[i];
+				std::cout << "\n";
 			}
 			
 			if (guessCount >= 6 || wordGuessed) {
@@ -110,10 +136,9 @@ int main() {
 			}
 		}
 	}
-	std::cout << "Wins: " << wins << "\n";
+	std::cout << "\nWins: " << wins << "\n";
 	std::cout << "Best Win Streak: " << bestWinStreak << "\n";
 	std::cout << "Games Played: " << gamesPlayed << "\n";
 	
 	return 0;
 }
-
