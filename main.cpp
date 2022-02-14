@@ -21,7 +21,6 @@ bool validityCheck(std::string guess, std::vector<std::string> list) {
 	return false;
 }
 
-
 bool charCheck(std::string guess) {
 	int count = 0;
 	std::string chars = "abcdefghijklmnopqrstuvwxyz";
@@ -73,11 +72,15 @@ void charCheckPrompt(std::string &guess) {
 
 void lenCheck(std::string &guess) {
 	while (guess.size() != 5) {
-		std::cout << "Please enter a 5 letter word." << "\n";
+		if (guess.size() < 5) {
+			std::cout << "Word is too short!" << "\n"; 
+		} else {
+			std::cout << "Word is too long!" << "\n"; 
+		}
 		std::cin >> guess;
 		lowerCase(guess);
-		charCheckPrompt(guess);
 	}
+	charCheckPrompt(guess);
 }
 
 int randomNumber() {
@@ -85,6 +88,12 @@ int randomNumber() {
 	int rng = rand() % 12972 + 1;
     
     return rng;
+}
+
+void wordCheck(std::string &guess) {
+	lowerCase(guess);
+	lenCheck(guess);
+	charCheckPrompt(guess);
 }
 
 int main() {
@@ -117,16 +126,12 @@ int main() {
 			std::cout << "Enter a five letter word." << "\n";
 			std::cin >> guess;
 			
-			lowerCase(guess);
-			charCheckPrompt(guess);
-			lenCheck(guess);
+			wordCheck(guess);
 			
 			while (!validityCheck(guess, wordList)) {
 				std::cout << "Please enter a valid word." << "\n";
 				std::cin >> guess;
-				lowerCase(guess);
-				lenCheck(guess);
-				charCheckPrompt(guess);
+				wordCheck(guess);
 			}
 			
 			guessCount += 1;
