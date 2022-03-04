@@ -39,14 +39,15 @@ bool charCheck(std::string guess) {
 
 // Avoids repeating chars by removing the repeated chars from the word then checking
 void charRepeat(std::string guess, std::vector<char> &guesses) {
-	for (int i = 0; i < guess.size(); i++) {
+	int size = guess.size();
+	for (int i = 0; i < size; i++) {
 		int count = 0;
-		for (int j = 0; j < guess.size(); j++) {
+		for (int j = 0; j < size; j++) {
 			if (guess[i] == guess[j]) {
 				count++;
 			}
 			// remove repeated char from the string
-			if (guess[i] == guesses[j] && count >= 1) {
+			if (guess[i] == guess[j] && count > 1) {
 				guess.erase(guess.begin() + j);
 			}
 		}
@@ -89,8 +90,9 @@ void charCheckPrompt(std::string &guess) {
 }
 
 void lenCheck(std::string &guess) {
-	while (guess.size() != 5) {
-		if (guess.size() < 5) {
+	int size = guess.size();
+	while (size != 5) {
+		if (size < 5) {
 			std::cout << "Word is too short!" << "\n"; 
 		} else {
 			std::cout << "Word is too long!" << "\n"; 
@@ -107,7 +109,7 @@ int randomNumber() {
     
     return rng;
 }
-// Needs Work
+
 void vectorOutput(std::vector<char> list) {
 	std::cout << "\n";	
 	for (char &c : list) {
@@ -151,6 +153,7 @@ int main() {
 		std::vector<char> guesses;
 		std::vector<char> greenChars;
 		std::vector<char> yellowChars;
+		
 		int guessCount = 0;
 		bool currentGameRunning = true;
 		bool wordGuessed = false;
@@ -178,9 +181,10 @@ int main() {
 				wordCheck(guess);
 			}
 			
+			// Segmentation Fault Causer
 			charRepeat(guess, guesses);
 			
-			std::cout << "Chars Guessed: " << "\n";
+			std::cout << "Words Guessed: " << "\n";
 			vectorOutput(guesses);
 			std::cout << "\n";
 			
@@ -212,7 +216,6 @@ int main() {
 					}
 				}	
 			  }
-			
 			
 			if (guessCount >= 6 || wordGuessed) {
 				endGame(currentGameRunning, running);
