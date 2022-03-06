@@ -13,8 +13,6 @@ int main() {
 	// Main loop
 	while (running) {
 		std::vector<char> guesses;
-		std::vector<char> greenChars;
-		std::vector<char> yellowChars;
 		
 		int guessCount = 0;
 		bool currentGameRunning = true;
@@ -31,7 +29,9 @@ int main() {
 		// Sub loop
 		while (currentGameRunning) {
 			std::string guess = "";
-			
+			std::vector<char> greenChars;
+			std::vector<char> yellowChars;
+
 			std::cout << "Enter a five letter word." << "\n";
 			std::cin >> guess;
 			
@@ -44,20 +44,15 @@ int main() {
 			}
 			// Word Bank
 			charRepeat(guess, guesses, guessCount);
+
 			std::cout << "\nLetters Guessed:\n";
 			output(guesses);
+
 			guessCount += 1;
 			
 			/* 
 			If the guess is not correct it shows how many are in the right spot
 			and shows how many are in the word but not in the right spot
-			
-			#1 - Currently there is a bug where a green letter thats is supposed to be 
-			     only green goes into the yellow list.
-			 
-			#2 - Can show multiple yellows for words that don't have that many letters. 
-			     Ex: Word ~ Sista and guess ~ sissy
-			     results in three yellows when there should be 2
 			*/
 			if (guess == randomWord) {
 				wordGuessed = true;
@@ -67,15 +62,15 @@ int main() {
 						// If the chars are the same letter and the same location in the word it's a green
 						if (guess[i] == randomWord[j] && i == j) {
 							greenChars.push_back(guess[i]);
-						} 
-						else if (guess[i] == randomWord[i] && i != j) {
+							continue;
+						}
+						if (guess[i] == randomWord[j] && i != j) {
 							yellowChars.push_back(guess[i]); 
-							break;
 						}
 					}
 				}	
-			  }
-			// Testing
+			}
+			 
 			std::cout << "\nGreen Letters:\n";
 			output(greenChars);
 
