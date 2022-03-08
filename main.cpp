@@ -13,7 +13,16 @@ int main() {
 	// Main loop
 	while (running) {
 		std::vector<char> guesses;
-		
+		std::vector<std::vector<char>> wordsUsed 
+		{
+			{' ', ' ', ' ', ' ', ' ',},
+			{' ', ' ', ' ', ' ', ' ',},
+			{' ', ' ', ' ', ' ', ' ',},
+			{' ', ' ', ' ', ' ', ' ',},
+			{' ', ' ', ' ', ' ', ' ',},
+			{' ', ' ', ' ', ' ', ' ',},
+		};
+
 		int guessCount = 0;
 		bool currentGameRunning = true;
 		bool wordGuessed = false;
@@ -34,7 +43,7 @@ int main() {
 
 			std::cout << "Enter a five letter word." << "\n";
 			std::cin >> guess;
-			
+
 			wordCheck(guess);
 			
 			while (!validityCheck(guess, wordList)) {
@@ -42,13 +51,14 @@ int main() {
 				std::cin >> guess;
 				wordCheck(guess);
 			}
+
+			guessCount += 1;
+
 			// Word Bank
 			charRepeat(guess, guesses, guessCount);
 
 			std::cout << "\nLetters Guessed:\n";
 			output(guesses);
-
-			guessCount += 1;
 			
 			/* 
 			If the guess is not correct it shows how many are in the right spot
@@ -64,20 +74,30 @@ int main() {
 							greenChars.push_back(guess[i]);
 							continue;
 						}
+						// Unwanted Duplicates can occur still
+						// Fucks up when there are duplicates in the random word as well.
 						if (guess[i] == randomWord[j] && i != j) {
 							yellowChars.push_back(guess[i]); 
 						}
 					}
 				}	
 			}
-			 
+			// testing
 			std::cout << "\nGreen Letters:\n";
 			output(greenChars);
 
 			std::cout << "\nYellow Letters:\n";
 			output(yellowChars);
 
-			if (guessCount >= 6 || wordGuessed) {
+			grid(guess, wordsUsed, guessCount);
+
+			// End Game Logic
+			if (guessCount >= 6) {
+				std::cout << "The Word Was " << randomWord << "\n";
+			} else if (wordGuessed) {
+				std::cout << "You won in " << guessCount << " moves\n";
+			}
+			if (guessCount >= 6 || wordGuessed) { 
 				endGame(currentGameRunning, running);
 			}
 		}
