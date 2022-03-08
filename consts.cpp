@@ -6,7 +6,9 @@
 #include <random>
 #include <time.h>
 
-// the size of the word could potentially be here too
+// Grid Constants
+const int ROWS = 5;
+const int COLUMNS = 6;
 
 // Words you can guess
 std::vector<std::string> wordList;
