@@ -1,5 +1,12 @@
 #include "consts.cpp"
 
+/*
+	Bugs: 	
+
+	- Breaks the entire program if there are three of same letter in a guess 
+	  or two or more letters within the word. Ex: Asses and Peeps
+*/
+
 bool validityCheck(std::string guess, std::vector<std::string> list) {
 	int count = 0;
 	for (std::string &w : list) {
@@ -32,9 +39,6 @@ bool charCheck(std::string guess) {
 /*  
 	Avoids repeating chars by removing the repeated chars from the word then checking
 	For Word Bank which will replicate the keyboard functionality
-
-	- Breaks the entire program if there are three of same letter in a guess 
-	  or two or more letters within the word. Ex: Asses and Peeps
 
 	- This could use a touch up as the two loops are practically the same
 */
@@ -101,9 +105,8 @@ void charCheckPrompt(std::string &guess) {
 }
 
 void lenCheck(std::string &guess) {
-	int size = guess.size();
-	while (size != 5) {
-		if (size < 5) {
+	while (guess.size() != 5) {
+		if (guess.size() < 5) {
 			std::cout << "Word is too short!" << "\n"; 
 		} else {
 			std::cout << "Word is too long!" << "\n"; 
@@ -137,8 +140,8 @@ void endGame(bool &currentGameRunning, bool &running) {
 
 void wordCheck(std::string &guess) {
 	lowerCase(guess);
-	lenCheck(guess);
 	charCheckPrompt(guess);
+	lenCheck(guess);
 }
 
 void output(std::vector<char> vector) {
@@ -146,4 +149,43 @@ void output(std::vector<char> vector) {
 		std::cout << c << ", ";
 	}
 	std::cout << "\n\n";
+}
+
+// Returns a 2D Table of a vector
+void grid(std::string guess, std::vector<std::vector<char>> &vect, int guessCount)
+{
+    std::string line = "__";
+    int b = ROWS - 1;
+
+	for (int i = guessCount - 1; i < guessCount; i++) {
+		for (int j = 0; j < COLUMNS; j++) {
+			vect[i][j] = guess[j];
+		}
+	}
+
+    for (int i = 0; i < ROWS; i++)
+    {
+        line.append("____"); 
+    }
+
+    for (int i = 0; i < COLUMNS; i++)
+    {
+        std::cout << line << "\n";
+        for (int j = 0; j < ROWS; j++)
+        {
+			if (j == 0) 
+			{
+				std::cout << "| ";
+			}
+            if (j == b)
+            {
+                std::cout << vect[i][j] << "  |\n";
+            }
+            else 
+            {
+                std::cout << vect[i][j] << " | ";
+            }
+        }
+    }
+    std::cout << "\n";
 }
